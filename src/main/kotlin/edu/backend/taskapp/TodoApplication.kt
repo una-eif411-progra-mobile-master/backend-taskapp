@@ -1,4 +1,4 @@
-package edu.backend.todo
+package edu.backend.taskapp
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication

@@ -1,1 +1,1 @@
-rootProject.name = "todo"
+rootProject.name = "taskapp"
