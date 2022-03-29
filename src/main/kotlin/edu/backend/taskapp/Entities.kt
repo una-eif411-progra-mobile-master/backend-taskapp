@@ -8,7 +8,7 @@ import javax.persistence.*
 data class Reminder(
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    var id: Long?,
+    var id: Long? = null,
     @Column(name = "reminder_date")
     var reminderDate:Date,
     // Entity Relationship
@@ -22,7 +22,7 @@ data class Reminder(
 data class Task(
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    var id: Long?,
+    var id: Long? = null,
     var title: String,
     var notes: String,
     @Temporal(TemporalType.DATE)
@@ -47,7 +47,7 @@ data class Task(
 data class Status(
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    var id: Long?,
+    var id: Long? = null,
     var label: String,
     // Entity Relationship
     @OneToMany(mappedBy = "status")
@@ -59,7 +59,7 @@ data class Status(
 data class Role(
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    var id: Long?,
+    var id: Long? = null,
     var name: String,
     // Entity Relationship
     @ManyToMany
@@ -76,7 +76,7 @@ data class Role(
 data class Privilege(
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    var id:Long?,
+    var id:Long? = null,
     var name: String,
     // Entity Relationship
     @ManyToMany(mappedBy = "roleList", fetch = FetchType.LAZY)
@@ -88,20 +88,21 @@ data class Privilege(
 @Entity
 @Table(name = "priority")
 data class Priority(
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    var id: Long?,
-    var name: String,
+    var label: String,
     // Entity Relationship
     @OneToMany(mappedBy = "priority")
-    var taskList: List<Task>,
+    var taskList: List<Task>? = null,
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    var id: Long? = null,
 )
 
 @Entity
+@Table(name = "users")
 data class User(
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    var id: Long?,
+    var id: Long? = null,
     var firstName: String,
     var lastName: String,
     var password: String,
