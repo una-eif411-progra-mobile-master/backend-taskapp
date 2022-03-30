@@ -3,13 +3,13 @@ The TaskApp represents a distributed system based on layers and interactions wit
 
 ## App Architecture
 
-![TaskApp_System](/Users/mguzmana/GitHub/backend-taskapp/diagrams/TaskApp_System.png)
+![TaskApp_System](diagrams/TaskApp_System.png)
 
 ## Layer Architecture
 
 The software application is divided into various horizontal layers, with each layer located on top of a lower layer. Each layer is dependent on one or more layers below it (depending on whether the layers are open or closed) but is independent of the layers above it.
 
-![taskapp-class](/Users/mguzmana/GitHub/backend-taskapp/diagrams/taskapp-class.png)
+![taskapp-class](diagrams/taskapp-class.png)
 
 ### Persistent or Data Layer
 
@@ -23,7 +23,7 @@ The main objects are the Entities and the relationship between them.
 
 PostgreSQL: The World's Most Advanced Open Source Relational Database
 
-![taskapp-er](/Users/mguzmana/GitHub/backend-taskapp/diagrams/taskapp-er.png)
+![taskapp-er](diagrams/taskapp-er.png)
 
 # General terms
 
