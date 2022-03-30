@@ -8,6 +8,9 @@ import org.springframework.test.context.jdbc.Sql
 
 @SpringBootTest
 @Sql("/import-users.sql", "/import-priorities.sql", "/import-status.sql", "/import-tasks.sql", "/import-reminders.sql")
+/**
+ * This class will load the initial data into the database
+ */
 class LoadInitData (
     @Autowired
     val taskRepository: TaskRepository,
