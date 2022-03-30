@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>/Users/mguzmana/GitHub/backend-taskapp/src/main/kotlin/edu/backend/taskapp</OriginalElement>
+  <nodes>
+    <node x="1232.0" y="0.0">edu.backend.taskapp.TaskAppApplicationKt</node>
+    <node x="960.5" y="888.0">edu.backend.taskapp.PriorityRepository</node>
+    <node x="0.0" y="487.0">edu.backend.taskapp.Status</node>
+    <node x="363.375" y="1135.0">edu.backend.taskapp.TaskRepository</node>
+    <node x="452.5" y="216.0">edu.backend.taskapp.Role</node>
+    <node x="916.0" y="487.0">edu.backend.taskapp.Priority</node>
+    <node x="0.0" y="1265.0">edu.backend.taskapp.TaskAppApplication</node>
+    <node x="375.5" y="776.0">edu.backend.taskapp.Task</node>
+    <node x="553.375" y="1078.0">edu.backend.taskapp.Reminder</node>
+    <node x="279.0" y="410.0">edu.backend.taskapp.User</node>
+    <node x="415.5" y="0.0">edu.backend.taskapp.Privilege</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="edu.backend.taskapp.Task" target="edu.backend.taskapp.Status" relationship="TO_ONE">
+      <point x="-212.0" y="15.0" />
+      <point x="-47.5" y="917.0" />
+      <point x="-47.5" y="573.0" />
+      <point x="-129.5" y="15.0" />
+    </edge>
+    <edge source="edu.backend.taskapp.User" target="edu.backend.taskapp.Task" relationship="TO_MANY">
+      <point x="-15.0" y="148.0" />
+      <point x="-15.0" y="-126.0" />
+    </edge>
+    <edge source="edu.backend.taskapp.PriorityRepository" target="edu.backend.taskapp.Priority" relationship="DEPENDENCY">
+      <point x="-96.0" y="0.0" />
+      <point x="929.0" y="902.0" />
+      <point x="929.0" y="709.0" />
+      <point x="1021.5" y="709.0" />
+      <point x="-30.0" y="71.0" />
+    </edge>
+    <edge source="edu.backend.taskapp.Privilege" target="edu.backend.taskapp.User" relationship="TO_MANY">
+      <point x="172.0" y="0.0" />
+      <point x="1239.5" y="82.0" />
+      <point x="1239.5" y="783.5" />
+      <point x="832.0" y="783.5" />
+      <point x="832.0" y="759.0" />
+      <point x="772.5" y="759.0" />
+      <point x="185.0" y="148.0" />
+    </edge>
+    <edge source="edu.backend.taskapp.Task" target="edu.backend.taskapp.User" relationship="TO_ONE">
+      <point x="185.0" y="-126.0" />
+      <point x="185.0" y="148.0" />
+    </edge>
+    <edge source="edu.backend.taskapp.Role" target="edu.backend.taskapp.Privilege" relationship="DEPENDENCY">
+      <point x="15.0" y="-71.0" />
+      <point x="15.0" y="82.0" />
+    </edge>
+    <edge source="edu.backend.taskapp.Privilege" target="edu.backend.taskapp.Role" relationship="DEPENDENCY">
+      <point x="-167.5" y="82.0" />
+      <point x="420.0" y="384.0" />
+      <point x="587.5" y="384.0" />
+      <point x="0.0" y="71.0" />
+    </edge>
+    <edge source="edu.backend.taskapp.User" target="edu.backend.taskapp.Role" relationship="DEPENDENCY">
+      <point x="0.0" y="-148.0" />
+      <point x="0.0" y="71.0" />
+    </edge>
+    <edge source="edu.backend.taskapp.Privilege" target="edu.backend.taskapp.Role" relationship="TO_MANY">
+      <point x="0.0" y="82.0" />
+      <point x="0.0" y="-71.0" />
+    </edge>
+    <edge source="edu.backend.taskapp.Role" target="edu.backend.taskapp.Privilege" relationship="TO_MANY">
+      <point x="30.0" y="-71.0" />
+      <point x="30.0" y="82.0" />
+    </edge>
+    <edge source="edu.backend.taskapp.Priority" target="edu.backend.taskapp.Task" relationship="TO_MANY">
+      <point x="-15.0" y="71.0" />
+      <point x="1036.5" y="724.0" />
+      <point x="572.5" y="724.0" />
+      <point x="-15.0" y="-126.0" />
+    </edge>
+    <edge source="edu.backend.taskapp.User" target="edu.backend.taskapp.Role" relationship="TO_MANY">
+      <point x="-152.5" y="-148.0" />
+      <point x="435.0" y="190.0" />
+      <point x="587.5" y="190.0" />
+      <point x="0.0" y="-71.0" />
+    </edge>
+    <edge source="edu.backend.taskapp.Task" target="edu.backend.taskapp.Status" relationship="DEPENDENCY">
+      <point x="-212.0" y="30.0" />
+      <point x="-62.5" y="932.0" />
+      <point x="-62.5" y="558.0" />
+      <point x="-129.5" y="0.0" />
+    </edge>
+    <edge source="edu.backend.taskapp.Status" target="edu.backend.taskapp.Task" relationship="DEPENDENCY">
+      <point x="0.0" y="71.0" />
+      <point x="129.5" y="741.0" />
+      <point x="587.5" y="741.0" />
+      <point x="0.0" y="-126.0" />
+    </edge>
+    <edge source="edu.backend.taskapp.Reminder" target="edu.backend.taskapp.Task" relationship="TO_ONE">
+      <point x="115.5" y="-15.0" />
+      <point x="817.0" y="1134.0" />
+      <point x="817.0" y="724.0" />
+      <point x="572.5" y="724.0" />
+      <point x="-15.0" y="-126.0" />
+    </edge>
+    <edge source="edu.backend.taskapp.Task" target="edu.backend.taskapp.Priority" relationship="TO_ONE">
+      <point x="212.0" y="31.5" />
+      <point x="1185.0" y="933.5" />
+      <point x="133.5" y="71.0" />
+    </edge>
+    <edge source="edu.backend.taskapp.Task" target="edu.backend.taskapp.User" relationship="DEPENDENCY">
+      <point x="15.0" y="-126.0" />
+      <point x="15.0" y="148.0" />
+    </edge>
+    <edge source="edu.backend.taskapp.User" target="edu.backend.taskapp.Task" relationship="DEPENDENCY">
+      <point x="0.0" y="148.0" />
+      <point x="0.0" y="-126.0" />
+    </edge>
+    <edge source="edu.backend.taskapp.Privilege" target="edu.backend.taskapp.User" relationship="DEPENDENCY">
+      <point x="-172.0" y="0.0" />
+      <point x="-17.5" y="82.0" />
+      <point x="-17.5" y="783.5" />
+      <point x="345.875" y="783.5" />
+      <point x="345.875" y="759.0" />
+      <point x="602.5" y="759.0" />
+      <point x="15.0" y="148.0" />
+    </edge>
+    <edge source="edu.backend.taskapp.Task" target="edu.backend.taskapp.Priority" relationship="DEPENDENCY">
+      <point x="212.0" y="0.0" />
+      <point x="929.0" y="902.0" />
+      <point x="929.0" y="709.0" />
+      <point x="1021.5" y="709.0" />
+      <point x="-30.0" y="71.0" />
+    </edge>
+    <edge source="edu.backend.taskapp.Priority" target="edu.backend.taskapp.Task" relationship="DEPENDENCY">
+      <point x="0.0" y="71.0" />
+      <point x="1051.5" y="741.0" />
+      <point x="587.5" y="741.0" />
+      <point x="0.0" y="-126.0" />
+    </edge>
+    <edge source="edu.backend.taskapp.Status" target="edu.backend.taskapp.Task" relationship="TO_MANY">
+      <point x="-15.0" y="71.0" />
+      <point x="114.5" y="724.0" />
+      <point x="572.5" y="724.0" />
+      <point x="-15.0" y="-126.0" />
+    </edge>
+    <edge source="edu.backend.taskapp.TaskRepository" target="edu.backend.taskapp.Task" relationship="DEPENDENCY">
+      <point x="-85.0" y="0.0" />
+      <point x="199.5" y="1149.0" />
+      <point x="199.5" y="741.0" />
+      <point x="587.5" y="741.0" />
+      <point x="0.0" y="-126.0" />
+    </edge>
+    <edge source="edu.backend.taskapp.Reminder" target="edu.backend.taskapp.Task" relationship="DEPENDENCY">
+      <point x="115.5" y="0.0" />
+      <point x="1170.0" y="1149.0" />
+      <point x="1170.0" y="741.0" />
+      <point x="587.5" y="741.0" />
+      <point x="0.0" y="-126.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="0.5165692007797271" showDependencies="true" x="696.5000000000001" y="659.0000000000001" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Constructors</Category>
+    <Category>Fields</Category>
+    <Category>Inner Classes</Category>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
