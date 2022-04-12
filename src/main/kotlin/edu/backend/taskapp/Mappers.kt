@@ -1,11 +1,15 @@
 package edu.backend.taskapp
 
 import org.mapstruct.Mapper
-import org.mapstruct.factory.Mappers
+import org.mapstruct.ReportingPolicy
 
-@Mapper
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 interface PriorityMapper {
-    fun priorityToPriorityDetails(priority: Priority) : PriorityDetails
+    fun priorityToPriorityDetails(
+        priority: Priority
+    ) : PriorityDetails
 
-    fun priorityListToPriorityDetailsList(priorityList: List<Priority>) : List<PriorityDetails>
+    fun priorityListToPriorityDetailsList(
+        priorityList: List<Priority>
+    ) : List<PriorityDetails>
 }
