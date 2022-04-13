@@ -8,6 +8,4 @@ import java.util.Date
 interface PriorityRepository: JpaRepository<Priority, Long>
 
 @Repository
-interface TaskRepository: JpaRepository<Task, Long> {
-    fun findAllByDueDateIs(dueDate:Date) : List<Task>?
-}
+interface TaskRepository: JpaRepository<Task, Long> {}

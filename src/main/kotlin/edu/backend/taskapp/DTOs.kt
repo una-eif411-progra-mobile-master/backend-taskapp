@@ -27,6 +27,15 @@ data class TaskInput(
     var priority: PriorityDetails,
 )
 
+data class TaskResult(
+    var id: Long?,
+    var title: String?,
+    var notes: String,
+    var createDate: Date,
+    var dueDate: Date,
+    var priority: PriorityDetails,
+)
+
 data class UserInput(
     var id: Long?,
     var firstName: String,

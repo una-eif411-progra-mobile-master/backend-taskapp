@@ -13,3 +13,18 @@ interface PriorityMapper {
         priorityList: List<Priority>
     ) : List<PriorityDetails>
 }
+
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
+interface TaskMapper {
+    fun taskToTaskResult(
+        task: Task
+    ) : TaskResult
+
+    fun taskListToTaskListResult (
+        taskList: List<Task>
+    ) : List<TaskResult>
+
+    fun taskInputToTask (
+        taskInput: TaskInput
+    ) : Task
+}
