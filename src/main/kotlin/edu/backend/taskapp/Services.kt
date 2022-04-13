@@ -2,8 +2,6 @@ package edu.backend.taskapp
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import java.time.LocalDate
-import java.time.LocalDateTime
 import java.util.*
 
 interface PriorityService {
@@ -12,7 +10,7 @@ interface PriorityService {
      *
      * @return a list of Users
      */
-    fun findAll() : List<PriorityDetails> ?
+    fun findAll() : List<PriorityResult> ?
 
     /**
      * Get one Priority by id
@@ -20,7 +18,7 @@ interface PriorityService {
      * @param id of the Priority
      * @return the Priority found
      */
-    fun findById(id : Long) : PriorityDetails ?
+    fun findById(id : Long) : PriorityResult ?
 }
 
 @Service
@@ -37,7 +35,7 @@ class AbstractPriorityService (
      *
      * @return a list of Users
      */
-    override fun findAll(): List<PriorityDetails>? {
+    override fun findAll(): List<PriorityResult>? {
         return priorityMapper.priorityListToPriorityDetailsList(
             priorityRepository.findAll()
         )
@@ -49,7 +47,7 @@ class AbstractPriorityService (
      * @param id of the Priority
      * @return the Priority found
      */
-    override fun findById(id: Long): PriorityDetails? {
+    override fun findById(id: Long): PriorityResult? {
         val priority : Optional<Priority> = priorityRepository.findById(id)
         return priorityMapper.priorityToPriorityDetails(
             priority.get(),

@@ -2,17 +2,16 @@ package edu.backend.taskapp
 
 import org.mapstruct.*
 import java.time.LocalDateTime
-import java.util.*
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 interface PriorityMapper {
     fun priorityToPriorityDetails(
         priority: Priority
-    ) : PriorityDetails
+    ) : PriorityResult
 
     fun priorityListToPriorityDetailsList(
         priorityList: List<Priority>
-    ) : List<PriorityDetails>
+    ) : List<PriorityResult>
 }
 
 @Mapper(

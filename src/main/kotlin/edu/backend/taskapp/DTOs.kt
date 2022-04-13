@@ -2,33 +2,25 @@ package edu.backend.taskapp
 
 import java.util.*
 
-data class StatusInput(
-    var id:Long,
-)
-
-data class StatusDetails(
-    var id:Long,
+data class StatusResult(
+    var id:Long? = null,
     var label: String? = null,
 )
 
-data class PriorityInput(
-    var id:Long,
-)
-
-data class PriorityDetails(
-    var id:Long,
+data class PriorityResult(
+    var id:Long? = null,
     var label: String? = null,
 )
 
 data class PrivilegeResult (
-    var id: Long,
+    var id: Long? = null,
     var name: String? = null
 )
 
 data class RoleResult (
-    var id: Long,
-    var name: String?,
-    var privileges: List<PrivilegeResult>,
+    var id: Long? = null,
+    var name: String? = null,
+    var privileges: List<PrivilegeResult>? = null,
 )
 
 data class TaskInput(
@@ -37,19 +29,19 @@ data class TaskInput(
     var notes: String?=null,
     var createDate: Date?=null,
     var dueDate: Date?=null,
-    var priority: PriorityInput?=null,
-    var status: StatusInput?=null,
+    var priority: PriorityResult?=null,
+    var status: StatusResult?=null,
     var user: UserInput?=null,
 )
 
 data class TaskResult(
     var id: Long,
-    var title: String?,
+    var title: String,
     var notes: String,
     var createDate: Date,
     var dueDate: Date,
-    var priority: PriorityDetails,
-    var status: StatusDetails,
+    var priority: PriorityResult,
+    var status: StatusResult,
 )
 
 data class UserInput(
@@ -80,8 +72,8 @@ data class UserResult(
 )
 
 data class UserSignUpInput(
-    var firstName: String,
-    var lastName: String,
-    var email: String,
-    var password: String,
+    var firstName: String? = null,
+    var lastName: String? = null,
+    var email: String? = null,
+    var password: String? = null,
 )
