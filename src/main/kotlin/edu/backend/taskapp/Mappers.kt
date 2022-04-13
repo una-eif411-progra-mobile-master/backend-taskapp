@@ -1,7 +1,8 @@
 package edu.backend.taskapp
 
-import org.mapstruct.Mapper
-import org.mapstruct.ReportingPolicy
+import org.mapstruct.*
+import java.time.LocalDateTime
+import java.util.*
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 interface PriorityMapper {
@@ -14,7 +15,10 @@ interface PriorityMapper {
     ) : List<PriorityDetails>
 }
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(
+    imports = [LocalDateTime::class],
+    componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE
+)
 interface TaskMapper {
     fun taskToTaskResult(
         task: Task
@@ -24,7 +28,11 @@ interface TaskMapper {
         taskList: List<Task>
     ) : List<TaskResult>
 
+    @Mapping(target = "createDate", defaultExpression ="java(new java.util.Date())")
     fun taskInputToTask (
         taskInput: TaskInput
     ) : Task
+
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    fun taskInputToTask(dto: TaskInput, @MappingTarget task: Task)
 }

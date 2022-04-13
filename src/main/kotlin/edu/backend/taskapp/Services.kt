@@ -2,6 +2,8 @@ package edu.backend.taskapp
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.*
 
 interface PriorityService {
@@ -71,14 +73,14 @@ interface TaskService {
 
     /**
      * Save and flush a Task entity in the database
-     * @param taskInputResult
+     * @param taskInput
      * @return the user created
      */
     fun create(taskInput: TaskInput) : TaskResult ?
 
     /**
      * Update a Task entity in the database
-     * @param taskInputResult the dto input for Task
+     * @param taskInput the dto input for Task
      * @return the new Task created
      */
     fun update(taskInput: TaskInput) : TaskResult ?
@@ -87,7 +89,7 @@ interface TaskService {
      * Delete a Task by id from Database
      * @param id of the Task
      */
-    fun deleteById(id : Long) : Void
+    fun deleteById(id : Long)
 }
 
 @Service
@@ -121,7 +123,7 @@ class AbstractTaskService (
 
     /**
      * Save and flush a Task entity in the database
-     * @param taskInputResult
+     * @param taskInput
      * @return the user created
      */
     override fun create(taskInput: TaskInput): TaskResult? {
@@ -133,19 +135,24 @@ class AbstractTaskService (
 
     /**
      * Update a Task entity in the database
-     * @param taskInputResult the dto input for Task
+     * @param taskInput the dto input for Task
      * @return the new Task created
      */
     override fun update(taskInput: TaskInput): TaskResult? {
-        TODO("Not yet implemented")
+        val task : Optional<Task> = taskRepository.findById(taskInput.id!!)
+        val taskUpdated : Task = task.get()
+        taskMapper.taskInputToTask(taskInput, taskUpdated)
+        return taskMapper.taskToTaskResult(taskRepository.save(taskUpdated))
     }
 
     /**
      * Delete a Task by id from Database
      * @param id of the Task
      */
-    override fun deleteById(id: Long): Void {
-        TODO("Not yet implemented")
+    override fun deleteById(id: Long) {
+        if (!taskRepository.findById(id).isEmpty){
+            taskRepository.deleteById(id)
+        }
     }
 
 }

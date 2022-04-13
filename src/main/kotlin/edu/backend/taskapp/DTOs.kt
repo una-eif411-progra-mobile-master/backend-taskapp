@@ -3,32 +3,32 @@ package edu.backend.taskapp
 import java.util.*
 
 data class PriorityDetails(
-    var id:Long?,
-    var label: String,
+    var id:Long,
+    var label: String? = null,
 )
 
 data class PrivilegeResult (
-    var id: Long? = null,
+    var id: Long,
     var name: String? = null
 )
 
 data class RoleResult (
-    var id: Long?,
+    var id: Long,
     var name: String?,
     var privileges: List<PrivilegeResult>,
 )
 
 data class TaskInput(
-    var id: Long?,
-    var title: String?,
+    var id: Long?=null,
+    var title: String,
     var notes: String,
-    var createDate: Date,
+    var createDate: Date?=null,
     var dueDate: Date,
     var priority: PriorityDetails,
 )
 
 data class TaskResult(
-    var id: Long?,
+    var id: Long,
     var title: String?,
     var notes: String,
     var createDate: Date,
@@ -37,7 +37,7 @@ data class TaskResult(
 )
 
 data class UserInput(
-    var id: Long?,
+    var id: Long,
     var firstName: String,
     var lastName: String,
     var email: String,
@@ -52,7 +52,7 @@ data class UserLoginInput(
 )
 
 data class UserResult(
-    var id: Long?,
+    var id: Long,
     var firstName: String,
     var lastName: String,
     var email: String,
