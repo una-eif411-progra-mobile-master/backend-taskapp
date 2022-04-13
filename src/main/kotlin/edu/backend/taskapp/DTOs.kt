@@ -2,6 +2,19 @@ package edu.backend.taskapp
 
 import java.util.*
 
+data class StatusInput(
+    var id:Long,
+)
+
+data class StatusDetails(
+    var id:Long,
+    var label: String? = null,
+)
+
+data class PriorityInput(
+    var id:Long,
+)
+
 data class PriorityDetails(
     var id:Long,
     var label: String? = null,
@@ -20,11 +33,13 @@ data class RoleResult (
 
 data class TaskInput(
     var id: Long?=null,
-    var title: String,
-    var notes: String,
+    var title: String?=null,
+    var notes: String?=null,
     var createDate: Date?=null,
-    var dueDate: Date,
-    var priority: PriorityDetails,
+    var dueDate: Date?=null,
+    var priority: PriorityInput?=null,
+    var status: StatusInput?=null,
+    var user: UserInput?=null,
 )
 
 data class TaskResult(
@@ -34,16 +49,17 @@ data class TaskResult(
     var createDate: Date,
     var dueDate: Date,
     var priority: PriorityDetails,
+    var status: StatusDetails,
 )
 
 data class UserInput(
-    var id: Long,
-    var firstName: String,
-    var lastName: String,
-    var email: String,
-    var password: String,
-    var enabled: Boolean?,
-    var roles: List<RoleResult>,
+    var id: Long?=null,
+    var firstName: String?=null,
+    var lastName: String?=null,
+    var email: String?=null,
+    var password: String?=null,
+    var enabled: Boolean?=null,
+    var roles: List<RoleResult>?=null,
 )
 
 data class UserLoginInput(

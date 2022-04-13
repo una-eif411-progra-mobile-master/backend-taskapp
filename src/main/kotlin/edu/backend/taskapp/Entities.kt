@@ -47,6 +47,7 @@ data class Task(
     var createDate: Date,
     @Temporal(TemporalType.DATE)
     var dueDate: Date,
+
     // Entity Relationship
     @ManyToOne
     @JoinColumn(name = "priority_id", nullable = false, referencedColumnName = "id")
@@ -84,10 +85,10 @@ data class Status(
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     var id: Long? = null,
-    var label: String,
+    var label: String? = null,
     // Entity Relationship
     @OneToMany(mappedBy = "status")
-    var taskList: List<Task>
+    var taskList: List<Task>? = null
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -178,13 +179,13 @@ data class Privilege(
 @Entity
 @Table(name = "priority")
 data class Priority(
-    var label: String,
-    // Entity Relationship
-    @OneToMany(mappedBy = "priority")
-    var taskList: List<Task>? = null,
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     var id: Long? = null,
+    var label: String? = null,
+    // Entity Relationship
+    @OneToMany(mappedBy = "priority")
+    var taskList: List<Task>? = null,
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -210,23 +211,23 @@ data class User(
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     var id: Long? = null,
-    var firstName: String,
-    var lastName: String,
-    var password: String,
-    var email: String,
-    var createDate: Date,
-    var enabled: Boolean?,
-    var tokenExpired: Boolean?,
+    var firstName: String? = null,
+    var lastName: String? = null,
+    var password: String? = null,
+    var email: String? = null,
+    var createDate: Date? = null,
+    var enabled: Boolean? = null,
+    var tokenExpired: Boolean? = null,
     // Entity Relationship
     @OneToMany(mappedBy = "user")
-    var taskList: List<Task>,
+    var taskList: List<Task>? = null,
     @ManyToMany
     @JoinTable(
         name = "user_role",
         joinColumns = [JoinColumn(name = "user_id", referencedColumnName = "id")],
         inverseJoinColumns = [JoinColumn(name = "role_id", referencedColumnName = "id")]
     )
-    var roleList: Set<Role>,
+    var roleList: Set<Role>? = null,
 
 ) {
     override fun equals(other: Any?): Boolean {
