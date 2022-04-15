@@ -10,7 +10,7 @@ interface PriorityService {
      *
      * @return a list of Users
      */
-    fun findAll() : List<PriorityResult> ?
+    fun findAll() : List<PriorityDetails> ?
 
     /**
      * Get one Priority by id
@@ -18,7 +18,7 @@ interface PriorityService {
      * @param id of the Priority
      * @return the Priority found
      */
-    fun findById(id : Long) : PriorityResult ?
+    fun findById(id : Long) : PriorityDetails ?
 }
 
 @Service
@@ -35,7 +35,7 @@ class AbstractPriorityService (
      *
      * @return a list of Users
      */
-    override fun findAll(): List<PriorityResult>? {
+    override fun findAll(): List<PriorityDetails>? {
         return priorityMapper.priorityListToPriorityDetailsList(
             priorityRepository.findAll()
         )
@@ -47,7 +47,7 @@ class AbstractPriorityService (
      * @param id of the Priority
      * @return the Priority found
      */
-    override fun findById(id: Long): PriorityResult? {
+    override fun findById(id: Long): PriorityDetails? {
         val priority : Optional<Priority> = priorityRepository.findById(id)
         return priorityMapper.priorityToPriorityDetails(
             priority.get(),

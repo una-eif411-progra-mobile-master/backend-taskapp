@@ -2,25 +2,25 @@ package edu.backend.taskapp
 
 import java.util.*
 
-data class StatusResult(
+data class StatusDetails(
     var id:Long? = null,
     var label: String? = null,
 )
 
-data class PriorityResult(
+data class PriorityDetails(
     var id:Long? = null,
     var label: String? = null,
 )
 
-data class PrivilegeResult (
+data class PrivilegeDetails (
     var id: Long? = null,
     var name: String? = null
 )
 
-data class RoleResult (
+data class RoleDetails (
     var id: Long? = null,
     var name: String? = null,
-    var privileges: List<PrivilegeResult>? = null,
+    var privileges: List<PrivilegeDetails>? = null,
 )
 
 data class TaskInput(
@@ -29,8 +29,8 @@ data class TaskInput(
     var notes: String?=null,
     var createDate: Date?=null,
     var dueDate: Date?=null,
-    var priority: PriorityResult?=null,
-    var status: StatusResult?=null,
+    var priority: PriorityDetails?=null,
+    var status: StatusDetails?=null,
     var user: UserInput?=null,
 )
 
@@ -40,8 +40,8 @@ data class TaskResult(
     var notes: String,
     var createDate: Date,
     var dueDate: Date,
-    var priority: PriorityResult,
-    var status: StatusResult,
+    var priority: PriorityDetails,
+    var status: StatusDetails,
 )
 
 data class UserInput(
@@ -51,7 +51,7 @@ data class UserInput(
     var email: String?=null,
     var password: String?=null,
     var enabled: Boolean?=null,
-    var roles: List<RoleResult>?=null,
+    var roles: List<RoleDetails>?=null,
 )
 
 data class UserLoginInput(
@@ -68,7 +68,7 @@ data class UserResult(
     var enabled: Boolean?,
     var tokenExpired: Boolean?,
     var createDate: Date,
-    var roles: List<RoleResult>,
+    var roles: List<RoleDetails>,
 )
 
 data class UserSignUpInput(

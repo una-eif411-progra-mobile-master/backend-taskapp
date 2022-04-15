@@ -7,11 +7,11 @@ import java.time.LocalDateTime
 interface PriorityMapper {
     fun priorityToPriorityDetails(
         priority: Priority
-    ) : PriorityResult
+    ) : PriorityDetails
 
     fun priorityListToPriorityDetailsList(
         priorityList: List<Priority>
-    ) : List<PriorityResult>
+    ) : List<PriorityDetails>
 }
 
 @Mapper(
