@@ -49,7 +49,6 @@ class RestExceptionHandler : ResponseEntityExceptionHandler() {
         return buildResponseEntity(apiError)
     }
 
-
     @ExceptionHandler(Exception::class)
     fun handleAll(
         ex: java.lang.Exception,

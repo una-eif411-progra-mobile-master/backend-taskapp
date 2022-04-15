@@ -1,8 +1,6 @@
 package edu.backend.taskapp
 
-import org.hibernate.ObjectNotFoundException
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.crossstore.ChangeSetPersister
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -12,7 +10,7 @@ interface PriorityService {
      *
      * @return a list of Users
      */
-    fun findAll() : List<PriorityDetails> ?
+    fun findAll(): List<PriorityDetails>?
 
     /**
      * Get one Priority by id
@@ -20,7 +18,7 @@ interface PriorityService {
      * @param id of the Priority
      * @return the Priority found
      */
-    fun findById(id : Long) : PriorityDetails ?
+    fun findById(id: Long): PriorityDetails?
 }
 
 @Service
@@ -31,7 +29,7 @@ class AbstractPriorityService(
     @Autowired
     val priorityMapper: PriorityMapper,
 
-    ): PriorityService {
+    ) : PriorityService {
     /**
      * Find all Priority
      *
@@ -50,7 +48,7 @@ class AbstractPriorityService(
      * @return the Priority found
      */
     override fun findById(id: Long): PriorityDetails? {
-        val priority : Optional<Priority> = priorityRepository.findById(id)
+        val priority: Optional<Priority> = priorityRepository.findById(id)
         return priorityMapper.priorityToPriorityDetails(
             priority.get(),
         )
@@ -62,43 +60,43 @@ interface TaskService {
      * Find all Task
      * @return a list of Users
      */
-    fun findAll() : List<TaskResult> ?
+    fun findAll(): List<TaskResult>?
 
     /**
      * Get one Task by id
      * @param id of the Task
      * @return the Task found
      */
-    fun findById(id : Long) : TaskResult ?
+    fun findById(id: Long): TaskResult?
 
     /**
      * Save and flush a Task entity in the database
      * @param taskInput
      * @return the user created
      */
-    fun create(taskInput: TaskInput) : TaskResult ?
+    fun create(taskInput: TaskInput): TaskResult?
 
     /**
      * Update a Task entity in the database
      * @param taskInput the dto input for Task
      * @return the new Task created
      */
-    fun update(taskInput: TaskInput) : TaskResult ?
+    fun update(taskInput: TaskInput): TaskResult?
 
     /**
      * Delete a Task by id from Database
      * @param id of the Task
      */
-    fun deleteById(id : Long)
+    fun deleteById(id: Long)
 }
 
 @Service
-class AbstractTaskService (
+class AbstractTaskService(
     @Autowired
     val taskRepository: TaskRepository,
     @Autowired
     val taskMapper: TaskMapper,
-        ) : TaskService {
+) : TaskService {
     /**
      * Find all Task
      * @return a list of Users
@@ -116,7 +114,7 @@ class AbstractTaskService (
      */
     @Throws(NoSuchElementException::class)
     override fun findById(id: Long): TaskResult? {
-        val task : Optional<Task> = taskRepository.findById(id)
+        val task: Optional<Task> = taskRepository.findById(id)
         if (task.isEmpty) {
             throw NoSuchElementException(String.format("The Task with the id: %s not found!", id))
         }
@@ -131,7 +129,7 @@ class AbstractTaskService (
      * @return the user created
      */
     override fun create(taskInput: TaskInput): TaskResult? {
-        val task : Task = taskMapper.taskInputToTask(taskInput)
+        val task: Task = taskMapper.taskInputToTask(taskInput)
         return taskMapper.taskToTaskResult(
             taskRepository.save(task)
         )
@@ -142,10 +140,13 @@ class AbstractTaskService (
      * @param taskInput the dto input for Task
      * @return the new Task created
      */
-    @Throws(ChangeSetPersister.NotFoundException::class)
+    @Throws(NoSuchElementException::class)
     override fun update(taskInput: TaskInput): TaskResult? {
-        val task : Optional<Task> = taskRepository.findById(taskInput.id!!)
-        val taskUpdated : Task = task.get()
+        val task: Optional<Task> = taskRepository.findById(taskInput.id!!)
+        if (task.isEmpty) {
+            throw NoSuchElementException(String.format("The Task with the id: %s not found!", taskInput.id))
+        }
+        val taskUpdated: Task = task.get()
         taskMapper.taskInputToTask(taskInput, taskUpdated)
         return taskMapper.taskToTaskResult(taskRepository.save(taskUpdated))
     }
@@ -154,10 +155,12 @@ class AbstractTaskService (
      * Delete a Task by id from Database
      * @param id of the Task
      */
-    @Throws(ChangeSetPersister.NotFoundException::class)
+    @Throws(NoSuchElementException::class)
     override fun deleteById(id: Long) {
-        if (!taskRepository.findById(id).isEmpty){
+        if (!taskRepository.findById(id).isEmpty) {
             taskRepository.deleteById(id)
+        } else {
+            throw NoSuchElementException(String.format("The Task with the id: %s not found!", id))
         }
     }
 
