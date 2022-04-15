@@ -47,8 +47,12 @@ class AbstractPriorityService(
      * @param id of the Priority
      * @return the Priority found
      */
+    @Throws(NoSuchElementException::class)
     override fun findById(id: Long): PriorityDetails? {
         val priority: Optional<Priority> = priorityRepository.findById(id)
+        if (priority.isEmpty) {
+            throw NoSuchElementException(String.format("The Priority with the id: %s not found!", id))
+        }
         return priorityMapper.priorityToPriorityDetails(
             priority.get(),
         )

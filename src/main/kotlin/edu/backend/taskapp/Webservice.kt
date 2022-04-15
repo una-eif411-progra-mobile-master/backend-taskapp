@@ -2,6 +2,7 @@ package edu.backend.taskapp
 
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
+import java.util.NoSuchElementException
 
 @RestController
 @RequestMapping("\${url.priorities}")
@@ -20,6 +21,7 @@ class PriorityController(private val priorityService: PriorityService){
      * @param id to find Priority
      * @return the Priority found
      */
+    @Throws(NoSuchElementException::class)
     @GetMapping("{id}")
     @ResponseBody
     fun findById(@PathVariable id:Long) = priorityService.findById(id)
@@ -32,6 +34,7 @@ class TaskController(private val taskService: TaskService) {
     @ResponseBody
     fun findAll() = taskService.findAll()
 
+    @Throws(NoSuchElementException::class)
     @GetMapping("{id}")
     @ResponseBody
     fun findById(@PathVariable id:Long) = taskService.findById(id)
@@ -42,12 +45,14 @@ class TaskController(private val taskService: TaskService) {
         return taskService.create(taskInput)
     }
 
+    @Throws(NoSuchElementException::class)
     @PutMapping(consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
     @ResponseBody
     fun update(@RequestBody taskInput: TaskInput) : TaskResult? {
         return taskService.update(taskInput)
     }
 
+    @Throws(NoSuchElementException::class)
     @DeleteMapping("{id}")
     @ResponseBody
     fun deleteById(@PathVariable id:Long) {
