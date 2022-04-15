@@ -1,6 +1,8 @@
 package edu.backend.taskapp
 
+import org.hibernate.ObjectNotFoundException
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.crossstore.ChangeSetPersister
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -22,14 +24,14 @@ interface PriorityService {
 }
 
 @Service
-class AbstractPriorityService (
+class AbstractPriorityService(
     @Autowired
-    val priorityRepository : PriorityRepository,
+    val priorityRepository: PriorityRepository,
 
     @Autowired
-    val priorityMapper: PriorityMapper
+    val priorityMapper: PriorityMapper,
 
-): PriorityService {
+    ): PriorityService {
     /**
      * Find all Priority
      *
@@ -112,8 +114,12 @@ class AbstractTaskService (
      * @param id of the Task
      * @return the Task found
      */
+    @Throws(NoSuchElementException::class)
     override fun findById(id: Long): TaskResult? {
         val task : Optional<Task> = taskRepository.findById(id)
+        if (task.isEmpty) {
+            throw NoSuchElementException(String.format("The Task with the id: %s not found!", id))
+        }
         return taskMapper.taskToTaskResult(
             task.get(),
         )
@@ -136,6 +142,7 @@ class AbstractTaskService (
      * @param taskInput the dto input for Task
      * @return the new Task created
      */
+    @Throws(ChangeSetPersister.NotFoundException::class)
     override fun update(taskInput: TaskInput): TaskResult? {
         val task : Optional<Task> = taskRepository.findById(taskInput.id!!)
         val taskUpdated : Task = task.get()
@@ -147,6 +154,7 @@ class AbstractTaskService (
      * Delete a Task by id from Database
      * @param id of the Task
      */
+    @Throws(ChangeSetPersister.NotFoundException::class)
     override fun deleteById(id: Long) {
         if (!taskRepository.findById(id).isEmpty){
             taskRepository.deleteById(id)
