@@ -6,12 +6,12 @@ import java.time.LocalDateTime
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 interface PriorityMapper {
     fun priorityToPriorityDetails(
-        priority: Priority
-    ) : PriorityDetails
+        priority: Priority,
+    ): PriorityDetails
 
     fun priorityListToPriorityDetailsList(
-        priorityList: List<Priority>
-    ) : List<PriorityDetails>
+        priorityList: List<Priority>,
+    ): List<PriorityDetails>
 }
 
 @Mapper(
@@ -20,17 +20,17 @@ interface PriorityMapper {
 )
 interface TaskMapper {
     fun taskToTaskResult(
-        task: Task
-    ) : TaskResult
+        task: Task,
+    ): TaskResult
 
-    fun taskListToTaskListResult (
-        taskList: List<Task>
-    ) : List<TaskResult>
+    fun taskListToTaskListResult(
+        taskList: List<Task>,
+    ): List<TaskResult>
 
-    @Mapping(target = "createDate", defaultExpression ="java(new java.util.Date())")
-    fun taskInputToTask (
-        taskInput: TaskInput
-    ) : Task
+    @Mapping(target = "createDate", defaultExpression = "java(new java.util.Date())")
+    fun taskInputToTask(
+        taskInput: TaskInput,
+    ): Task
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     fun taskInputToTask(dto: TaskInput, @MappingTarget task: Task)

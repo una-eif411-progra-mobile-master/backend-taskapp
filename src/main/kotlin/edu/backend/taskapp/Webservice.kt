@@ -2,11 +2,10 @@ package edu.backend.taskapp
 
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
-import java.util.NoSuchElementException
 
 @RestController
 @RequestMapping("\${url.priorities}")
-class PriorityController(private val priorityService: PriorityService){
+class PriorityController(private val priorityService: PriorityService) {
 
     /**
      * WS to find all elements of type Priority
@@ -24,7 +23,7 @@ class PriorityController(private val priorityService: PriorityService){
     @Throws(NoSuchElementException::class)
     @GetMapping("{id}")
     @ResponseBody
-    fun findById(@PathVariable id:Long) = priorityService.findById(id)
+    fun findById(@PathVariable id: Long) = priorityService.findById(id)
 }
 
 @RestController
@@ -37,25 +36,25 @@ class TaskController(private val taskService: TaskService) {
     @Throws(NoSuchElementException::class)
     @GetMapping("{id}")
     @ResponseBody
-    fun findById(@PathVariable id:Long) = taskService.findById(id)
+    fun findById(@PathVariable id: Long) = taskService.findById(id)
 
     @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
     @ResponseBody
-    fun create(@RequestBody taskInput: TaskInput) : TaskResult? {
+    fun create(@RequestBody taskInput: TaskInput): TaskResult? {
         return taskService.create(taskInput)
     }
 
     @Throws(NoSuchElementException::class)
     @PutMapping(consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
     @ResponseBody
-    fun update(@RequestBody taskInput: TaskInput) : TaskResult? {
+    fun update(@RequestBody taskInput: TaskInput): TaskResult? {
         return taskService.update(taskInput)
     }
 
     @Throws(NoSuchElementException::class)
     @DeleteMapping("{id}")
     @ResponseBody
-    fun deleteById(@PathVariable id:Long) {
+    fun deleteById(@PathVariable id: Long) {
         taskService.deleteById(id)
     }
 }
