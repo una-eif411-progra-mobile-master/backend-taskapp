@@ -216,7 +216,7 @@ data class User(
     var password: String? = null,
     var email: String? = null,
     var createDate: Date? = null,
-    var enabled: Boolean? = null,
+    var enabled: Boolean,
     var tokenExpired: Boolean? = null,
     // Entity Relationship
     @OneToMany(mappedBy = "user")

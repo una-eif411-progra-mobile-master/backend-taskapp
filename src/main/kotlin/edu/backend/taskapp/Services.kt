@@ -1,7 +1,13 @@
 package edu.backend.taskapp
 
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.authority.SimpleGrantedAuthority
+import org.springframework.security.core.userdetails.UserDetails
+import org.springframework.security.core.userdetails.UserDetailsService
+import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.util.*
 
 interface PriorityService {
@@ -166,6 +172,79 @@ class AbstractTaskService(
         } else {
             throw NoSuchElementException(String.format("The Task with the id: %s not found!", id))
         }
+    }
+
+}
+
+@Service
+@Transactional
+class AppUserDetailsService(
+    @Autowired
+    val userRepository: UserRepository,
+    @Autowired
+    val roleRepository: RoleRepository,
+    @Autowired
+    val roleMapper: RoleMapper,
+) : UserDetailsService {
+
+    /**
+     * Locates the user based on the username. In the actual implementation, the search
+     * may possibly be case sensitive, or case insensitive depending on how the
+     * implementation instance is configured. In this case, the `UserDetails`
+     * object that comes back may have a username that is of a different case than what
+     * was actually requested..
+     * @param username the username identifying the user whose data is required.
+     * @return a fully populated user record (never `null`)
+     * @throws UsernameNotFoundException if the user could not be found or the user has no
+     * GrantedAuthority
+     */
+    @Throws(UsernameNotFoundException::class)
+    override fun loadUserByUsername(username: String): UserDetails {
+        var userAuth: org.springframework.security.core.userdetails.User? = null
+        val user: Optional<User> = userRepository.findByEmail(username)
+        if (user.isEmpty) {
+            return org.springframework.security.core.userdetails.User(
+                "", "", true, true, true, true,
+                getAuthorities(Arrays.asList(
+                    roleRepository.findByName("ROLE_USER").get())))
+        }
+
+        val name: String = user.get().firstName.plus("").plus(user.get().lastName)
+        val roleResults: Set<RoleDetails> = roleMapper.roleListToRoleDetailsList(user.get().roleList)
+
+        userAuth = org.springframework.security.core.userdetails.User(
+            user.get().email, user.get().password, user.get().enabled, true, true,
+            true, getAuthorities(user.get().roleList!!.toMutableList()))
+
+        return userAuth
+    }
+
+    private fun getAuthorities(
+        roles: MutableList<Role>,
+    ): Collection<GrantedAuthority?>? {
+        return getGrantedAuthorities(getPrivileges(roles))
+    }
+
+    private fun getPrivileges(roles: MutableList<Role>?): List<String> {
+        val privileges: MutableList<String> = ArrayList()
+        val collection: MutableList<Privilege> = ArrayList()
+        if (roles != null) {
+            for (role in roles) {
+                collection.addAll(role.privilegeList)
+            }
+        }
+        for (item in collection) {
+            privileges.add(item.name)
+        }
+        return privileges
+    }
+
+    private fun getGrantedAuthorities(privileges: List<String>): List<GrantedAuthority?>? {
+        val authorities: MutableList<GrantedAuthority?> = ArrayList()
+        for (privilege in privileges) {
+            authorities.add(SimpleGrantedAuthority(privilege))
+        }
+        return authorities
     }
 
 }

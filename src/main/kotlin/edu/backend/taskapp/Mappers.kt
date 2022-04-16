@@ -35,3 +35,11 @@ interface TaskMapper {
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     fun taskInputToTask(dto: TaskInput, @MappingTarget task: Task)
 }
+
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
+interface RoleMapper {
+    fun roleListToRoleDetailsList(
+        roleList: Set<Role>?,
+    ): Set<RoleDetails>
+}
+
