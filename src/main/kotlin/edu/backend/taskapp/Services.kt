@@ -209,9 +209,6 @@ class AppUserDetailsService(
                     roleRepository.findByName("ROLE_USER").get())))
         }
 
-        val name: String = user.get().firstName.plus("").plus(user.get().lastName)
-        val roleResults: Set<RoleDetails> = roleMapper.roleListToRoleDetailsList(user.get().roleList)
-
         userAuth = org.springframework.security.core.userdetails.User(
             user.get().email, user.get().password, user.get().enabled, true, true,
             true, getAuthorities(user.get().roleList!!.toMutableList()))
