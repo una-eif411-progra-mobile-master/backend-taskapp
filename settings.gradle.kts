@@ -1,1 +1,1 @@
-rootProject.name = "taskapp"
+rootProject.name = "backend-taskapp"
