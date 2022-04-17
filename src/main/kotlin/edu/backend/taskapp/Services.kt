@@ -55,13 +55,9 @@ class AbstractPriorityService(
      */
     @Throws(NoSuchElementException::class)
     override fun findById(id: Long): PriorityDetails? {
-        val priority: Optional<Priority> = priorityRepository.findById(id)
-        if (priority.isEmpty) {
-            throw NoSuchElementException(String.format("The Priority with the id: %s not found!", id))
-        }
-        return priorityMapper.priorityToPriorityDetails(
-            priority.get(),
-        )
+        val priority: Priority = priorityRepository.findById(id).orElse(null)
+            ?: throw NoSuchElementException(String.format("The Priority with the id: %s not found!", id))
+        return priorityMapper.priorityToPriorityDetails(priority)
     }
 }
 
@@ -124,13 +120,9 @@ class AbstractTaskService(
      */
     @Throws(NoSuchElementException::class)
     override fun findById(id: Long): TaskResult? {
-        val task: Optional<Task> = taskRepository.findById(id)
-        if (task.isEmpty) {
-            throw NoSuchElementException(String.format("The Task with the id: %s not found!", id))
-        }
-        return taskMapper.taskToTaskResult(
-            task.get(),
-        )
+        val task: Task = taskRepository.findById(id).orElse(null)
+            ?: throw NoSuchElementException(String.format("The Task with the id: %s not found!", id))
+        return taskMapper.taskToTaskResult(task)
     }
 
     /**
@@ -152,11 +144,9 @@ class AbstractTaskService(
      */
     @Throws(NoSuchElementException::class)
     override fun update(taskInput: TaskInput): TaskResult? {
-        val task: Optional<Task> = taskRepository.findById(taskInput.id!!)
-        if (task.isEmpty) {
-            throw NoSuchElementException(String.format("The Task with the id: %s not found!", taskInput.id))
-        }
-        val taskUpdated: Task = task.get()
+        val task: Task = taskRepository.findById(taskInput.id!!).orElse(null)
+            ?: throw NoSuchElementException(String.format("The Task with the id: %s not found!", taskInput.id))
+        val taskUpdated: Task = task
         taskMapper.taskInputToTask(taskInput, taskUpdated)
         return taskMapper.taskToTaskResult(taskRepository.save(taskUpdated))
     }
@@ -200,21 +190,16 @@ class AppUserDetailsService(
      */
     @Throws(UsernameNotFoundException::class)
     override fun loadUserByUsername(username: String): UserDetails {
-        var userAuth: org.springframework.security.core.userdetails.User? = null
-        val user: Optional<User> = userRepository.findByEmail(username)
-        if (user.isEmpty) {
-            return org.springframework.security.core.userdetails.User(
+        var userAuth: org.springframework.security.core.userdetails.User
+        val user: User = userRepository.findByEmail(username).orElse(null)
+            ?: return org.springframework.security.core.userdetails.User(
                 "", "", true, true, true, true,
                 getAuthorities(Arrays.asList(
                     roleRepository.findByName("ROLE_USER").get())))
-        }
-
-        val name: String = user.get().firstName.plus("").plus(user.get().lastName)
-        val roleResults: Set<RoleDetails> = roleMapper.roleListToRoleDetailsList(user.get().roleList)
 
         userAuth = org.springframework.security.core.userdetails.User(
-            user.get().email, user.get().password, user.get().enabled, true, true,
-            true, getAuthorities(user.get().roleList!!.toMutableList()))
+            user.email, user.password, user.enabled, true, true,
+            true, getAuthorities(user.roleList!!.toMutableList()))
 
         return userAuth
     }
