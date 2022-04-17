@@ -157,11 +157,10 @@ class AbstractTaskService(
      */
     @Throws(NoSuchElementException::class)
     override fun deleteById(id: Long) {
-        if (!taskRepository.findById(id).isEmpty) {
-            taskRepository.deleteById(id)
-        } else {
-            throw NoSuchElementException(String.format("The Task with the id: %s not found!", id))
-        }
+        taskRepository.findById(id).orElse(null)
+            ?: throw NoSuchElementException(String.format("The Task with the id: %s not found!", id))
+
+        taskRepository.deleteById(id)
     }
 
 }
