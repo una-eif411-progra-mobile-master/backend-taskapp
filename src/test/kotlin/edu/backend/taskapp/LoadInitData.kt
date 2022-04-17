@@ -7,7 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Profile
 import org.springframework.test.context.jdbc.Sql
 
-@Profile("test")
+@Profile("initlocal & initheroku")
 @SpringBootTest
 @Sql("/import-users.sql", "/import-priorities.sql", "/import-status.sql",
     "/import-tasks.sql", "/import-reminders.sql", "/import_privileges.sql",
