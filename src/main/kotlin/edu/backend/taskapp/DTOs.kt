@@ -1,6 +1,5 @@
 package edu.backend.taskapp
 
-import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.*
 
 data class StatusDetails(
@@ -56,10 +55,8 @@ data class UserInput(
 )
 
 data class UserLoginInput(
-    @JsonProperty("username")
-    var username: String,
-    @JsonProperty("password")
-    var password: String,
+    var username: String = "",
+    var password: String = "",
 )
 
 data class UserResult(
