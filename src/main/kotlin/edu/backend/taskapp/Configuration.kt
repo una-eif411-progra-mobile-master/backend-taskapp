@@ -24,7 +24,7 @@ import java.security.NoSuchAlgorithmException
 import java.util.*
 import javax.annotation.Resource
 
-@Profile("initlocal & initheroku")
+@Profile("initlocal")
 @Configuration
 @EnableWebSecurity
 class OpenSecurityConfiguration : WebSecurityConfigurerAdapter() {
@@ -34,7 +34,7 @@ class OpenSecurityConfiguration : WebSecurityConfigurerAdapter() {
     }
 }
 
-@Profile("!initlocal & !initheroku")
+@Profile("!initlocal")
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true)
