@@ -54,10 +54,10 @@ data class Task(
     var priority: Priority,
     @ManyToOne
     @JoinColumn(name = "status_id", nullable = false, referencedColumnName = "id")
-    var status: Status,
+    var status: Status? = null,
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false, referencedColumnName = "id")
-    var user: User,
+    var user: User? = null,
 
     ) {
     override fun equals(other: Any?): Boolean {
