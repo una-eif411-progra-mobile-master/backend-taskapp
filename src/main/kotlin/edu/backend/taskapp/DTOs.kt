@@ -1,5 +1,6 @@
 package edu.backend.taskapp
 
+import com.fasterxml.jackson.annotation.JsonFormat
 import java.util.*
 
 data class StatusDetails(
@@ -28,6 +29,7 @@ data class TaskInput(
     var title: String? = null,
     var notes: String? = null,
     var createDate: Date? = null,
+    @JsonFormat(pattern="dd/MM/yyyy")
     var dueDate: Date? = null,
     var priority: PriorityDetails? = null,
     var status: StatusDetails? = null,

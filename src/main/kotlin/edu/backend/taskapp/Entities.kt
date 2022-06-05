@@ -1,5 +1,6 @@
 package edu.backend.taskapp
 
+import com.fasterxml.jackson.annotation.JsonFormat
 import java.util.*
 import javax.persistence.*
 
@@ -46,6 +47,7 @@ data class Task(
     @Temporal(TemporalType.DATE)
     var createDate: Date,
     @Temporal(TemporalType.DATE)
+    @JsonFormat(pattern="dd/MM/yyyy")
     var dueDate: Date,
 
     // Entity Relationship
