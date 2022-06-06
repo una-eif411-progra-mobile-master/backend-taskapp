@@ -158,7 +158,8 @@ class AbstractTaskService(
     override fun update(taskInput: TaskInput): TaskResult? {
         val task: Task = taskRepository.findById(taskInput.id!!).orElse(null)
             ?: throw NoSuchElementException(String.format("The Task with the id: %s not found!", taskInput.id))
-        val taskUpdated: Task = task
+        var taskUpdated: Task = task
+        taskUpdated.priority = Priority()
         taskMapper.taskInputToTask(taskInput, taskUpdated)
         return taskMapper.taskToTaskResult(taskRepository.save(taskUpdated))
     }
