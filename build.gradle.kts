@@ -1,6 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
+	application
 	id("org.springframework.boot") version "2.6.5"
 	id("io.spring.dependency-management") version "1.0.11.RELEASE"
 	kotlin("jvm") version "1.6.10"
@@ -10,7 +11,7 @@ plugins {
 }
 
 group = "edu.backend"
-version = "0.0.1-SNAPSHOT"
+version = "1.0"
 java.sourceCompatibility = JavaVersion.VERSION_11
 
 repositories {
@@ -18,16 +19,19 @@ repositories {
 }
 
 dependencies {
-	implementation ("org.mapstruct:mapstruct:1.5.2.Final")
+	implementation("io.jsonwebtoken:jjwt:0.9.1")
+  implementation ("org.mapstruct:mapstruct:1.5.2.Final")
 	kapt("org.mapstruct:mapstruct-processor:1.5.2.Final")
 	annotationProcessor ("org.mapstruct:mapstruct:1.5.2.Final")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("org.springframework.security:spring-security-test")
 	kapt("org.springframework.boot:spring-boot-configuration-processor")
 	runtimeOnly("org.postgresql:postgresql")
 }

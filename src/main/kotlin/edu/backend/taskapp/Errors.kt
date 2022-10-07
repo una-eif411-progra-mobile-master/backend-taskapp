@@ -1,5 +1,7 @@
 package edu.backend.taskapp
 
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ControllerAdvice
@@ -7,7 +9,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.context.request.WebRequest
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler
 import java.time.LocalDateTime
-import java.util.NoSuchElementException
 
 data class ApiSubError(
     val code: String? = "NO-CODE",
@@ -28,6 +29,7 @@ data class ApiError(
 
 @ControllerAdvice
 class RestExceptionHandler : ResponseEntityExceptionHandler() {
+    val logger: Logger = LoggerFactory.getLogger(RestExceptionHandler::class.java)
 
     fun buildResponseEntity(apiError: ApiError): ResponseEntity<Any>? {
         return ResponseEntity(apiError, apiError.status)
@@ -45,6 +47,7 @@ class RestExceptionHandler : ResponseEntityExceptionHandler() {
         )
 
         apiError.addSubError(ApiSubError("ELEMENT_NOT_FOUND", "Element not found"))
+        logger.debug("BackEnd - TaskApp {}", ex)
 
         return buildResponseEntity(apiError)
     }
@@ -62,6 +65,7 @@ class RestExceptionHandler : ResponseEntityExceptionHandler() {
         )
 
         apiError.addSubError(ApiSubError("INTERNAL_ERROR", "There is a serious error in the system"))
+        logger.debug("BackEnd - TaskApp {}", ex)
 
         return buildResponseEntity(apiError)
     }

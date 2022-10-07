@@ -1,37 +1,39 @@
 package edu.backend.taskapp
 
+import com.fasterxml.jackson.annotation.JsonFormat
 import java.util.*
 
 data class StatusDetails(
-    var id:Long? = null,
+    var id: Long? = null,
     var label: String? = null,
 )
 
 data class PriorityDetails(
-    var id:Long? = null,
+    var id: Long? = null,
     var label: String? = null,
 )
 
-data class PrivilegeDetails (
+data class PrivilegeDetails(
     var id: Long? = null,
-    var name: String? = null
+    var name: String? = null,
 )
 
-data class RoleDetails (
+data class RoleDetails(
     var id: Long? = null,
     var name: String? = null,
     var privileges: List<PrivilegeDetails>? = null,
 )
 
 data class TaskInput(
-    var id: Long?=null,
-    var title: String?=null,
-    var notes: String?=null,
-    var createDate: Date?=null,
-    var dueDate: Date?=null,
-    var priority: PriorityDetails?=null,
-    var status: StatusDetails?=null,
-    var user: UserInput?=null,
+    var id: Long? = null,
+    var title: String? = null,
+    var notes: String? = null,
+    var createDate: Date? = null,
+    @JsonFormat(pattern="dd/MM/yyyy")
+    var dueDate: Date? = null,
+    var priority: PriorityDetails? = null,
+    var status: StatusDetails? = null,
+    var user: UserInput? = null,
 )
 
 data class TaskResult(
@@ -45,18 +47,18 @@ data class TaskResult(
 )
 
 data class UserInput(
-    var id: Long?=null,
-    var firstName: String?=null,
-    var lastName: String?=null,
-    var email: String?=null,
-    var password: String?=null,
-    var enabled: Boolean?=null,
-    var roles: List<RoleDetails>?=null,
+    var id: Long? = null,
+    var firstName: String? = null,
+    var lastName: String? = null,
+    var email: String? = null,
+    var password: String? = null,
+    var enabled: Boolean? = null,
+    var roles: List<RoleDetails>? = null,
 )
 
 data class UserLoginInput(
-    var username: String,
-    var password: String,
+    var username: String = "",
+    var password: String = "",
 )
 
 data class UserResult(

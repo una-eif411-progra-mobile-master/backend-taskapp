@@ -1,5 +1,6 @@
 package edu.backend.taskapp
 
+import com.fasterxml.jackson.annotation.JsonFormat
 import java.util.*
 import javax.persistence.*
 
@@ -10,7 +11,7 @@ data class Reminder(
     @GeneratedValue(strategy = GenerationType.AUTO)
     var id: Long? = null,
     @Column(name = "reminder_date")
-    var reminderDate:Date,
+    var reminderDate: Date,
     // Entity Relationship
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId // Share the same primary key between 2 tables
@@ -46,6 +47,7 @@ data class Task(
     @Temporal(TemporalType.DATE)
     var createDate: Date,
     @Temporal(TemporalType.DATE)
+    @JsonFormat(pattern="dd/MM/yyyy")
     var dueDate: Date,
 
     // Entity Relationship
@@ -54,12 +56,12 @@ data class Task(
     var priority: Priority,
     @ManyToOne
     @JoinColumn(name = "status_id", nullable = false, referencedColumnName = "id")
-    var status: Status,
+    var status: Status? = null,
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false, referencedColumnName = "id")
-    var user: User,
+    var user: User? = null,
 
-) {
+    ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is Task) return false
@@ -88,7 +90,7 @@ data class Status(
     var label: String? = null,
     // Entity Relationship
     @OneToMany(mappedBy = "status")
-    var taskList: List<Task>? = null
+    var taskList: List<Task>? = null,
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -149,7 +151,7 @@ data class Role(
 data class Privilege(
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    var id:Long? = null,
+    var id: Long? = null,
     var name: String,
     // Entity Relationship
     @ManyToMany(mappedBy = "roleList", fetch = FetchType.LAZY)
@@ -157,7 +159,7 @@ data class Privilege(
     @ManyToMany(mappedBy = "privilegeList", fetch = FetchType.LAZY)
     var roleList: Set<Role>,
 
-) {
+    ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is Privilege) return false
@@ -216,7 +218,7 @@ data class User(
     var password: String? = null,
     var email: String? = null,
     var createDate: Date? = null,
-    var enabled: Boolean? = null,
+    var enabled: Boolean,
     var tokenExpired: Boolean? = null,
     // Entity Relationship
     @OneToMany(mappedBy = "user")
@@ -229,7 +231,7 @@ data class User(
     )
     var roleList: Set<Role>? = null,
 
-) {
+    ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is User) return false
