@@ -21,7 +21,7 @@ import org.springframework.web.cors.CorsConfigurationSource
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 import javax.annotation.Resource
 
-@Profile("test")
+@Profile("initlocal")
 @Configuration
 @EnableWebSecurity
 class OpenSecurityConfiguration{
@@ -41,7 +41,7 @@ class OpenSecurityConfiguration{
 
 }
 
-@Profile("!test")
+@Profile("!initlocal")
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity

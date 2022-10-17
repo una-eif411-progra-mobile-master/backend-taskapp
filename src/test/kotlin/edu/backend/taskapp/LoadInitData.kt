@@ -7,11 +7,9 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Profile
 import org.springframework.test.context.jdbc.Sql
 
-@Profile("test")
+@Profile("initlocal")
 @SpringBootTest
-@Sql("/import-users.sql", "/import-priorities.sql", "/import-status.sql",
-    "/import-tasks.sql", "/import-reminders.sql", "/import_privileges.sql",
-    "/import_roles.sql", "/import_privileges_roles.sql", "/import_users_roles.sql")
+@Sql("/import-database.sql")
 /**
  * This class will load the initial data into the database
  */

@@ -1,5 +1,6 @@
 package edu.backend.taskapp
 
+import com.fasterxml.jackson.annotation.JsonFormat
 import java.util.*
 import javax.persistence.*
 
@@ -46,6 +47,7 @@ data class Task(
     @Temporal(TemporalType.DATE)
     var createDate: Date,
     @Temporal(TemporalType.DATE)
+    @JsonFormat(pattern="dd/MM/yyyy")
     var dueDate: Date,
 
     // Entity Relationship
@@ -54,10 +56,10 @@ data class Task(
     var priority: Priority,
     @ManyToOne
     @JoinColumn(name = "status_id", nullable = false, referencedColumnName = "id")
-    var status: Status,
+    var status: Status? = null,
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false, referencedColumnName = "id")
-    var user: User,
+    var user: User? = null,
 
     ) {
     override fun equals(other: Any?): Boolean {

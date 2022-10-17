@@ -106,6 +106,9 @@ class JwtAuthorizationFilter(authenticationManager: AuthenticationManager) :
                 .parseClaimsJws(authorizationToken)
                 .getBody()
                 .getSubject()
+
+            LoggedUser.logIn(username)
+
             SecurityContextHolder.getContext().authentication =
                 UsernamePasswordAuthenticationToken(username, null, emptyList())
         }
@@ -114,6 +117,25 @@ class JwtAuthorizationFilter(authenticationManager: AuthenticationManager) :
     }
 
 }
+
+/**
+ * Object to holder the user information
+ */
+object LoggedUser {
+    private val userHolder = ThreadLocal<String>()
+    fun logIn(user: String) {
+        userHolder.set(user)
+    }
+
+    fun logOut() {
+        userHolder.remove()
+    }
+
+    fun get(): String {
+        return userHolder.get()
+    }
+}
+
 
 
 
