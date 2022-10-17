@@ -3,7 +3,6 @@ package edu.backend.taskapp
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpHeaders
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.AuthenticationServiceException
@@ -33,9 +32,6 @@ object SecurityConstants {
 
 class JwtAuthenticationFilter(authenticationManager: AuthenticationManager) : UsernamePasswordAuthenticationFilter() {
 
-    @Value("\${url.login}")
-    val loginUrl = null
-
     private val authManager: AuthenticationManager
 
     init {
@@ -49,8 +45,8 @@ class JwtAuthenticationFilter(authenticationManager: AuthenticationManager) : Us
         response: HttpServletResponse,
     ): Authentication {
 
-        if (request.getMethod() != "POST") {
-            throw AuthenticationServiceException("Authentication method not supported: " + request.getMethod())
+        if (request.method != "POST") {
+            throw AuthenticationServiceException("Authentication method not supported: $request.method")
         }
 
         return try {
