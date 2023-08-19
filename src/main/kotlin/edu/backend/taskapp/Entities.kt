@@ -1,7 +1,7 @@
 package edu.backend.taskapp
 
+import jakarta.persistence.*
 import java.util.*
-import javax.persistence.*
 
 @Entity
 @Table(name = "reminder")
@@ -59,7 +59,7 @@ data class Task(
     @JoinColumn(name = "user_id", nullable = false, referencedColumnName = "id")
     var user: User,
 
-) {
+    ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is Task) return false
@@ -152,9 +152,9 @@ data class Privilege(
     var id:Long? = null,
     var name: String,
     // Entity Relationship
-    @ManyToMany(mappedBy = "roleList", fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
     var userList: Set<User>,
-    @ManyToMany(mappedBy = "privilegeList", fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
     var roleList: Set<Role>,
 
 ) {
