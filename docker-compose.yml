@@ -26,5 +26,6 @@ services:
       - SPRING_DATASOURCE_USERNAME=taskapp
       - SPRING_DATASOURCE_PASSWORD=12345
       - SPRING_JPA_HIBERNATE_DDL_AUTO=create-drop
+      - SPRING_PROFILES_ACTIVE=default
     depends_on:
       - db
