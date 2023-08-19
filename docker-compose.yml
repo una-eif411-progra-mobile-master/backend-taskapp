@@ -13,12 +13,14 @@ services:
       - '5432:5432'
 
   app:
+    image: arm64v8/openjdk:17-jdk-slim
     container_name: application
-    build:
-      context: .
-      dockerfile: Dockerfile
     ports:
       - '8081:8080'
+    volumes:
+      - ./build/libs:/app
+    working_dir: /app
+    command: java -jar taskapp-0.0.1-SNAPSHOT.jar
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/taskapp
       - SPRING_DATASOURCE_USERNAME=taskapp
