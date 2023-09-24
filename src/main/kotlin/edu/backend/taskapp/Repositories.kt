@@ -21,3 +21,8 @@ interface RoleRepository : JpaRepository<Role, Long> {
 interface UserRepository : JpaRepository<User, Long> {
     fun findByEmail(@Param("email") email : String) : Optional<User>
 }
+
+@Repository
+interface StatusRepository : JpaRepository<Status, Long> {
+    fun findByLabel(@Param("label") label : String) : Optional<Status>
+}

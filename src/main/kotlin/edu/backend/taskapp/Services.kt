@@ -101,6 +101,10 @@ class AbstractTaskService(
     @Autowired
     val taskRepository: TaskRepository,
     @Autowired
+    val userRepository: UserRepository,
+    @Autowired
+    val statusRepository: StatusRepository,
+    @Autowired
     val taskMapper: TaskMapper,
 ) : TaskService {
     /**
@@ -132,6 +136,14 @@ class AbstractTaskService(
      */
     override fun create(taskInput: TaskInput): TaskResult? {
         val task: Task = taskMapper.taskInputToTask(taskInput)
+        if (task.user == null){
+            val user = userRepository.findByEmail(LoggedUser.get()).orElse(null)
+            task.user = user
+        }
+        if (task.status == null) {
+            val status = statusRepository.findByLabel("Pending").orElse(null)
+            task.status = status
+        }
         return taskMapper.taskToTaskResult(
             taskRepository.save(task)
         )
@@ -146,7 +158,8 @@ class AbstractTaskService(
     override fun update(taskInput: TaskInput): TaskResult? {
         val task: Task = taskRepository.findById(taskInput.id!!).orElse(null)
             ?: throw NoSuchElementException(String.format("The Task with the id: %s not found!", taskInput.id))
-        val taskUpdated: Task = task
+        var taskUpdated: Task = task
+        taskUpdated.priority = Priority()
         taskMapper.taskInputToTask(taskInput, taskUpdated)
         return taskMapper.taskToTaskResult(taskRepository.save(taskUpdated))
     }
@@ -172,13 +185,11 @@ class AppUserDetailsService(
     val userRepository: UserRepository,
     @Autowired
     val roleRepository: RoleRepository,
-    @Autowired
-    val roleMapper: RoleMapper,
 ) : UserDetailsService {
 
     /**
      * Locates the user based on the username. In the actual implementation, the search
-     * may possibly be case sensitive, or case insensitive depending on how the
+     * may be case sensitive, or case insensitive depending on how the
      * implementation instance is configured. In this case, the `UserDetails`
      * object that comes back may have a username that is of a different case than what
      * was actually requested..
@@ -189,7 +200,7 @@ class AppUserDetailsService(
      */
     @Throws(UsernameNotFoundException::class)
     override fun loadUserByUsername(username: String): UserDetails {
-        var userAuth: org.springframework.security.core.userdetails.User
+        val userAuth: org.springframework.security.core.userdetails.User
         val user: User = userRepository.findByEmail(username).orElse(null)
             ?: return org.springframework.security.core.userdetails.User(
                 "", "", true, true, true, true,
@@ -205,7 +216,7 @@ class AppUserDetailsService(
 
     private fun getAuthorities(
         roles: MutableList<Role>,
-    ): Collection<GrantedAuthority?>? {
+    ): Collection<GrantedAuthority?> {
         return getGrantedAuthorities(getPrivileges(roles))
     }
 
@@ -223,7 +234,7 @@ class AppUserDetailsService(
         return privileges
     }
 
-    private fun getGrantedAuthorities(privileges: List<String>): List<GrantedAuthority?>? {
+    private fun getGrantedAuthorities(privileges: List<String>): List<GrantedAuthority?> {
         val authorities: MutableList<GrantedAuthority?> = ArrayList()
         for (privilege in privileges) {
             authorities.add(SimpleGrantedAuthority(privilege))

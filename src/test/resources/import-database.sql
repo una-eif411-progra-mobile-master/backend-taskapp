@@ -42,7 +42,13 @@ INSERT INTO public.user_role (user_id, role_id) VALUES (3, 3);
 /** Tasks **/
 INSERT INTO public.task (id, create_date, due_date, notes, title, priority_id, status_id, user_id) VALUES (1, '2020-08-24', '2020-09-15', 'Different Notes', 'Evaluate Students', 1, 1, 1);
 INSERT INTO public.task (id, create_date, due_date, notes, title, priority_id, status_id, user_id) VALUES (2, '2020-08-24', '2020-08-27', 'More Notes', 'Coordinate with professors', 2, 1, 1);
-ALTER SEQUENCE hibernate_sequence RESTART WITH 3;
 
 /** Reminder **/
 INSERT INTO public.reminder (reminder_date, task_id) VALUES ('2020-08-30 08:00:00.000000', 1);
+
+ALTER SEQUENCE task_seq RESTART WITH 3;
+ALTER SEQUENCE users_seq RESTART WITH 4;
+ALTER SEQUENCE priority_seq RESTART WITH 4;
+ALTER SEQUENCE status_seq RESTART WITH 4;
+ALTER SEQUENCE role_seq RESTART WITH 4;
+ALTER SEQUENCE privilege_seq RESTART WITH 3;

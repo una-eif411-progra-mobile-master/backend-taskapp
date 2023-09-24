@@ -1,7 +1,8 @@
 package edu.backend.taskapp
 
+import com.fasterxml.jackson.annotation.JsonFormat
+import jakarta.persistence.*
 import java.util.*
-import javax.persistence.*
 
 @Entity
 @Table(name = "reminder")
@@ -46,6 +47,7 @@ data class Task(
     @Temporal(TemporalType.DATE)
     var createDate: Date,
     @Temporal(TemporalType.DATE)
+    @JsonFormat(pattern="dd/MM/yyyy")
     var dueDate: Date,
 
     // Entity Relationship
@@ -54,10 +56,10 @@ data class Task(
     var priority: Priority,
     @ManyToOne
     @JoinColumn(name = "status_id", nullable = false, referencedColumnName = "id")
-    var status: Status,
+    var status: Status? = null,
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false, referencedColumnName = "id")
-    var user: User,
+    var user: User? = null,
 
     ) {
     override fun equals(other: Any?): Boolean {
@@ -152,9 +154,9 @@ data class Privilege(
     var id: Long? = null,
     var name: String,
     // Entity Relationship
-    @ManyToMany(mappedBy = "roleList", fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
     var userList: Set<User>,
-    @ManyToMany(mappedBy = "privilegeList", fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
     var roleList: Set<Role>,
 
     ) {

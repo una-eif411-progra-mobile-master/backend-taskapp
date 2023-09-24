@@ -3,9 +3,11 @@ package edu.backend.taskapp
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Qualifier
-import org.springframework.beans.factory.annotation.Value
+import io.jsonwebtoken.io.Decoders
+import io.jsonwebtoken.security.*
+import jakarta.servlet.FilterChain
+import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletResponse
 import org.springframework.http.HttpHeaders
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.AuthenticationServiceException
@@ -13,17 +15,15 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.AuthenticationException
 import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.security.web.AuthenticationEntryPoint
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
-import org.springframework.stereotype.Component
-import org.springframework.web.servlet.HandlerExceptionResolver
 import java.io.IOException
+import java.security.Key
 import java.util.*
-import javax.servlet.FilterChain
-import javax.servlet.http.HttpServletRequest
-import javax.servlet.http.HttpServletResponse
 
+/**
+ * This class will hold the constants used in the security
+ */
 object SecurityConstants {
     // JWT token defaults val TOKEN_PREFIX = "Bearer "
     const val TOKEN_TYPE = "JWT"
@@ -33,13 +33,15 @@ object SecurityConstants {
     const val TOKEN_PREFIX = "Bearer "
     const val APPLICATION_JSON = "application/json"
     const val UTF_8 = "UTF-8"
-    val TOKEN_SECRET: String = Base64.getEncoder().encodeToString("Mike-Education".toByteArray())
+    const val TOKEN_SECRET: String =
+        "======================MikeEducationMikeEducationMikeEducationMikeEducationMikeEducationMikeEducation" +
+                "MikeEducation==========================="
 }
 
+/**
+ *
+ */
 class JwtAuthenticationFilter(authenticationManager: AuthenticationManager) : UsernamePasswordAuthenticationFilter() {
-
-    @Value("\${url.login}")
-    val loginUrl = null
 
     private val authManager: AuthenticationManager
 
@@ -54,18 +56,19 @@ class JwtAuthenticationFilter(authenticationManager: AuthenticationManager) : Us
         response: HttpServletResponse,
     ): Authentication {
 
-        if (request.getMethod() != "POST") {
-            throw AuthenticationServiceException("Authentication method not supported: " + request.getMethod())
+        if (request.method != "POST") {
+            throw AuthenticationServiceException("Authentication method not supported: $request.method")
         }
 
         return try {
             val userLoginInput: UserLoginInput = ObjectMapper()
-                .readValue(request.getInputStream(), UserLoginInput::class.java)
+                .readValue(request.inputStream, UserLoginInput::class.java)
             authManager.authenticate(
                 UsernamePasswordAuthenticationToken(
                     userLoginInput.username,
                     userLoginInput.password,
-                    ArrayList())
+                    ArrayList()
+                )
             )
         } catch (exception: IOException) {
             throw RuntimeException(exception)
@@ -80,7 +83,7 @@ class JwtAuthenticationFilter(authenticationManager: AuthenticationManager) : Us
         val objectMapper = ObjectMapper()
 
         val token = Jwts.builder()
-            .signWith(SignatureAlgorithm.HS512, SecurityConstants.TOKEN_SECRET)
+            .signWith(key(), SignatureAlgorithm.HS512)
             .setHeaderParam("typ", SecurityConstants.TOKEN_TYPE)
             .setIssuer(SecurityConstants.TOKEN_ISSUER)
             .setAudience(SecurityConstants.TOKEN_AUDIENCE)
@@ -97,6 +100,16 @@ class JwtAuthenticationFilter(authenticationManager: AuthenticationManager) : Us
     }
 }
 
+/**
+ * This function will return the key to sign the token
+ */
+private fun key(): Key {
+    return Keys.hmacShaKeyFor(Decoders.BASE64.decode(SecurityConstants.TOKEN_SECRET))
+}
+
+/**
+ * This class will validate the token
+ */
 class JwtAuthorizationFilter(authenticationManager: AuthenticationManager) :
     BasicAuthenticationFilter(authenticationManager) {
 
@@ -110,11 +123,11 @@ class JwtAuthorizationFilter(authenticationManager: AuthenticationManager) :
 
         if (authorizationToken != null && authorizationToken.startsWith(SecurityConstants.TOKEN_PREFIX)) {
             authorizationToken = authorizationToken.replaceFirst(SecurityConstants.TOKEN_PREFIX.toRegex(), "")
-            val username: String = Jwts.parser()
-                .setSigningKey(SecurityConstants.TOKEN_SECRET)
-                .parseClaimsJws(authorizationToken)
-                .getBody()
-                .getSubject()
+            val username: String =
+                Jwts.parserBuilder().setSigningKey(key()).build().parseClaimsJws(authorizationToken).body.subject
+
+            LoggedUser.logIn(username)
+
             SecurityContextHolder.getContext().authentication =
                 UsernamePasswordAuthenticationToken(username, null, emptyList())
         }
@@ -123,6 +136,25 @@ class JwtAuthorizationFilter(authenticationManager: AuthenticationManager) :
     }
 
 }
+
+/**
+ * Object to holder the user information
+ */
+object LoggedUser {
+    private val userHolder = ThreadLocal<String>()
+    fun logIn(user: String) {
+        userHolder.set(user)
+    }
+
+    fun logOut() {
+        userHolder.remove()
+    }
+
+    fun get(): String {
+        return userHolder.get()
+    }
+}
+
 
 
 
