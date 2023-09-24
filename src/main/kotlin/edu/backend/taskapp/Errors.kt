@@ -1,7 +1,5 @@
 package edu.backend.taskapp
 
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ControllerAdvice
@@ -29,7 +27,6 @@ data class ApiError(
 
 @ControllerAdvice
 class RestExceptionHandler : ResponseEntityExceptionHandler() {
-    val logger: Logger = LoggerFactory.getLogger(RestExceptionHandler::class.java)
 
     fun buildResponseEntity(apiError: ApiError): ResponseEntity<Any>? {
         return ResponseEntity(apiError, apiError.status)

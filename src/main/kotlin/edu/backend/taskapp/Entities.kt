@@ -1,8 +1,8 @@
 package edu.backend.taskapp
 
 import com.fasterxml.jackson.annotation.JsonFormat
+import jakarta.persistence.*
 import java.util.*
-import javax.persistence.*
 
 @Entity
 @Table(name = "reminder")
@@ -154,9 +154,9 @@ data class Privilege(
     var id: Long? = null,
     var name: String,
     // Entity Relationship
-    @ManyToMany(mappedBy = "roleList", fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
     var userList: Set<User>,
-    @ManyToMany(mappedBy = "privilegeList", fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
     var roleList: Set<Role>,
 
     ) {

@@ -19,7 +19,7 @@ import org.springframework.security.web.SecurityFilterChain
 import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.CorsConfigurationSource
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
-import javax.annotation.Resource
+import jakarta.annotation.Resource
 
 @Profile("initlocal")
 @Configuration
@@ -29,8 +29,12 @@ class OpenSecurityConfiguration{
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http
-            .csrf().disable()
-            .cors().disable()
+            .csrf{
+                it.disable()
+            }
+            .cors{
+                it.disable()
+            }
             .authorizeHttpRequests {
                 it
                     .anyRequest().authenticated()
@@ -78,13 +82,17 @@ class JwtSecurityConfiguration {
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http
-            .csrf().disable()
-            .cors().disable()
+            .csrf{
+                it.disable()
+            }
+            .cors{
+                it.configurationSource(corsConfigurationSource())
+            }
             .authorizeHttpRequests {
                 it
-                    .antMatchers("/".plus(URL_UNSECURE).plus("/**")).permitAll()
-                    .antMatchers(HttpMethod.POST, URL_SIGNUP).permitAll()
-                    .antMatchers("/**").authenticated()
+                    .requestMatchers("/".plus(URL_UNSECURE).plus("/**")).permitAll()
+                    .requestMatchers(HttpMethod.POST, URL_SIGNUP).permitAll()
+                    .requestMatchers("/**").authenticated()
             }
             .sessionManagement{
                 it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
