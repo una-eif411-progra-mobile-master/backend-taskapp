@@ -158,7 +158,7 @@ class AbstractTaskService(
     override fun update(taskInput: TaskInput): TaskResult? {
         val task: Task = taskRepository.findById(taskInput.id!!).orElse(null)
             ?: throw NoSuchElementException(String.format("The Task with the id: %s not found!", taskInput.id))
-        var taskUpdated: Task = task
+        val taskUpdated: Task = task
         taskUpdated.priority = Priority()
         taskMapper.taskInputToTask(taskInput, taskUpdated)
         return taskMapper.taskToTaskResult(taskRepository.save(taskUpdated))
@@ -204,8 +204,10 @@ class AppUserDetailsService(
         val user: User = userRepository.findByEmail(username).orElse(null)
             ?: return org.springframework.security.core.userdetails.User(
                 "", "", true, true, true, true,
-                getAuthorities(Arrays.asList(
-                    roleRepository.findByName("ROLE_USER").get())))
+                getAuthorities(
+                    listOf(
+                    roleRepository.findByName("ROLE_USER").get())
+                ))
 
         userAuth = org.springframework.security.core.userdetails.User(
             user.email, user.password, user.enabled, true, true,
@@ -214,32 +216,11 @@ class AppUserDetailsService(
         return userAuth
     }
 
-    private fun getAuthorities(
-        roles: MutableList<Role>,
-    ): Collection<GrantedAuthority?> {
-        return getGrantedAuthorities(getPrivileges(roles))
-    }
-
-    private fun getPrivileges(roles: MutableList<Role>?): List<String> {
-        val privileges: MutableList<String> = ArrayList()
-        val collection: MutableList<Privilege> = ArrayList()
-        if (roles != null) {
-            for (role in roles) {
-                collection.addAll(role.privilegeList)
-            }
-        }
-        for (item in collection) {
-            privileges.add(item.name)
-        }
-        return privileges
-    }
-
-    private fun getGrantedAuthorities(privileges: List<String>): List<GrantedAuthority?> {
-        val authorities: MutableList<GrantedAuthority?> = ArrayList()
-        for (privilege in privileges) {
-            authorities.add(SimpleGrantedAuthority(privilege))
-        }
-        return authorities
+    private fun getAuthorities(roles: Collection<Role>): Collection<GrantedAuthority> {
+        return roles.flatMap { role ->
+            sequenceOf(SimpleGrantedAuthority(role.name)) +
+                    role.privilegeList.map { privilege -> SimpleGrantedAuthority(privilege.name) }
+        }.toList()
     }
 
 }
