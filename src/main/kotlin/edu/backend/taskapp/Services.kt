@@ -136,7 +136,7 @@ class AbstractTaskService(
      */
     override fun create(taskInput: TaskInput): TaskResult? {
         val task: Task = taskMapper.taskInputToTask(taskInput)
-        if (task.user == null){
+        if (task.user == null) {
             val user = userRepository.findByEmail(LoggedUser.get()).orElse(null)
             task.user = user
         }
@@ -206,12 +206,15 @@ class AppUserDetailsService(
                 "", "", true, true, true, true,
                 getAuthorities(
                     listOf(
-                    roleRepository.findByName("ROLE_USER").get())
-                ))
+                        roleRepository.findByName("ROLE_USER").get()
+                    )
+                )
+            )
 
         userAuth = org.springframework.security.core.userdetails.User(
             user.email, user.password, user.enabled, true, true,
-            true, getAuthorities(user.roleList!!.toMutableList()))
+            true, getAuthorities(user.roleList!!.toMutableList())
+        )
 
         return userAuth
     }
